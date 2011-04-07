@@ -26,8 +26,8 @@ def pop(pilha):
   return pilha.pop()
 
 
-def flood_fill_horiz(param):
-  fatia, arq_saida, yo, xo = param
+def flood_fill_horiz(fatia, arq_saida, yo, xo):
+  
   branco = 255
   cinza = 128
   preto = 0
