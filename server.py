@@ -1,6 +1,9 @@
+import glob
+import os
 import time
 import zmq
 
+from scipy.misc import imread
 from optparse import OptionParser
 
 def parse_cli():
@@ -17,7 +20,10 @@ def serve(input_dir, output_dir, address):
     image_send = context.socket(zmq.PUSH)
     image_send.bind(address)
 
-    print "Conected"
+    for arq in glob.glob(os.path.join(input_dir, '*')):
+        img = imread(arq)
+        image_send.send_pyobj(img)
+
 
 def main():
     opcoes, args = parse_cli()

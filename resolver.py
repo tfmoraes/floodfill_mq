@@ -11,11 +11,15 @@ def parse_cli():
     return opcoes, args
 
 
-def resolver(input_dir, output_dir, address):
+def resolver(name, address):
     context = zmq.Context()
     image_send = context.socket(zmq.PULL)
     image_send.connect(address)
-    print "Conectou"
+
+    while True:
+        img = image_send.recv_pyobj()
+        print name, "received a new image"
+
 
 def main():
     opcoes, args = parse_cli()
@@ -24,7 +28,7 @@ def main():
     resolvers = range(cpu_count())
 
     for r in resolvers:
-        Process(target=resolver, args=(input_dir, output_dir, address)).start()
+        Process(target=resolver, args=(r, address,)).start()
 
 if __name__ == '__main__':
     main()
