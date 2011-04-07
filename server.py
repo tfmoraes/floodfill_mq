@@ -14,11 +14,10 @@ def parse_cli():
 
 def serve(input_dir, output_dir, address):
     context = zmq.Context()
-
     image_send = context.socket(zmq.PUSH)
     image_send.bind(address)
 
-    print "Conectou"
+    print "Conected"
 
 def main():
     opcoes, args = parse_cli()
