@@ -16,11 +16,14 @@ def parse_cli():
 def resolver(name, address):
     context = zmq.Context()
     image_send = context.socket(zmq.PULL)
+    print "Connecting to", address
     image_send.connect(address)
+    print "Connected"
 
     while True:
         img = image_send.recv_pyobj()
-        flood_fill_horiz(img + 255, '/tmp/output.png', 0, 0)
+        print "Resolving a new image"
+        flood_fill_horiz(img, '/tmp/output.png', 0, 0)
 
 
 def main():
