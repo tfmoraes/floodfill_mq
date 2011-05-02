@@ -49,10 +49,10 @@ def serve_to_workers(address, shared_address):
 
     while 1:
         msg = workers_socket.recv()
-        print msg
+        print msg.startswith('GET')
         if msg.startswith('GET'):
             if shared_address.value:
-                workers_socket.send('ADDRESS %s' % shared_address)
+                workers_socket.send('ADDRESS %s' % shared_address.value)
             else:
                 workers_socket.send('REPEAT')
         else:

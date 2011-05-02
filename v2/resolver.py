@@ -8,16 +8,28 @@ from floodfill import flood_fill_horiz
 
 def parse_cli():
     parser = OptionParser()
-    parser.add_option('-a', '--address', dest='address', default='tcp://*:1324')
+    parser.add_option('-a', '--address', dest='address', default='tcp://*:1234')
     opcoes, args = parser.parse_args()
     return opcoes, args
 
 
 def resolver(name, address):
     context = zmq.Context()
+
+    task_socket = context.socket(zmq.REQ)
+    task_socket.connect(address)
+
+    while 1:
+        task_socket.send('GET')
+        msg = task_socket.recv()
+        print msg
+        if msg.startswith('ADDRESS'):
+            task_address = msg.split()[1]
+            break
+
     image_send = context.socket(zmq.PULL)
     print "Connecting to", address
-    image_send.connect(address)
+    image_send.connect(task_address)
     print "Connected"
 
     while True:
